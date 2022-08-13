@@ -5,10 +5,12 @@
 @layer base {
   html {
     font-family: "Vazirmatn", sans-serif;
+    background-color: #ffffff;
   }
-  html.dark{
-    background-color : #2a2b2e
+  body {
+    direction: rtl;
+  }
+  html.dark {
+    background-color: #2a2b2e;
   }
 }
-
-

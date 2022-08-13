@@ -34,13 +34,17 @@ function ShowRoles() {
 
   const simpleMafiasCount = roles.mafiaCount - mafiaRolesCount;
   const simpleCityCount = roles.cityCount - cityRolesCount;
-  const allRolesArray = [...roles.roles];
+  const allRolesArray = rolesData
+    .filter((item) => roles.roles.includes(item.id))
+    .map((item) => item.roleType);
+
   for (let i = 0; i < simpleMafiasCount; i++) {
     allRolesArray.push(ROLES_ENUM.SIMPLE_MAFIA);
   }
   for (let i = 0; i < simpleCityCount; i++) {
     allRolesArray.push(ROLES_ENUM.SIMPLE_CITY);
   }
+
   const shuffleArray = (array: number[]) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -113,7 +117,9 @@ function ShowRoles() {
               <h2 className="text-lg font-bold text-center pb-2 border-b dark:text-white">
                 {modalContent}
               </h2>
-              <p className="text-sm text-center my-2 dark:text-gray-100 opacity-80">توضیحات به زودی ...</p>
+              <p className="text-sm text-center my-2 dark:text-gray-100 opacity-80">
+                توضیحات به زودی ...
+              </p>
               <button
                 className="text-white bg-primary-2 rounded shadow py-2 px-5 mx-auto block mt-4"
                 onClick={() => setShowModal(false)}

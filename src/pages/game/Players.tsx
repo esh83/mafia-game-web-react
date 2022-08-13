@@ -15,17 +15,24 @@ function Players() {
       dispatch(adddPlayers(playerNames));
       navigate("../game/roles");
     } else {
+      setShowErrorAlertMessage("حداقل 5 بازیکن ثبت کنید !")
       setShowErrorAlert(true);
     }
   }
   const [playerNames, setPlayerNames] = useState<string[]>(playersInStore);
   const [nameInput, setNameInput] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [ErrorAlertMessage, setShowErrorAlertMessage] = useState("");
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (nameInput === "") {
       return;
     } else {
+      if(playerNames.includes(nameInput)) {
+        setShowErrorAlertMessage("نام بازیکن تکراری است !")
+        setShowErrorAlert(true)
+return
+      }
       setNameInput("");
       setPlayerNames((prev) => [...prev, nameInput]);
     }
@@ -42,7 +49,7 @@ function Players() {
       <Alert
         show={showErrorAlert}
         setShow={setShowErrorAlert}
-        message="حداقل 5 بازیکن ثبت کنید !"
+        message={ErrorAlertMessage}
       />
       <Header
         title={`ثبت بازیکن ها (${playerNames.length})`}

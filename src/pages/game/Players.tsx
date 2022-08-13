@@ -11,7 +11,7 @@ function Players() {
   const navigate = useNavigate();
   const playersInStore = useAppSelector((state) => state.players.playerNames);
   function addPlayersToStore() {
-    if (playerNames.length > 5) {
+    if (playerNames.length >= 5) {
       dispatch(adddPlayers(playerNames));
       navigate("../game/roles");
     } else {
@@ -42,7 +42,7 @@ function Players() {
       <Alert
         show={showErrorAlert}
         setShow={setShowErrorAlert}
-        message="حداقل 6 بازیکن ثبت کنید !"
+        message="حداقل 5 بازیکن ثبت کنید !"
       />
       <Header
         title={`ثبت بازیکن ها (${playerNames.length})`}

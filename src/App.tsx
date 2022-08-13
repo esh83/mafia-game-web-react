@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Players from "./pages/game/Players";
 import ChooseRole from "./pages/game/ChooseRole";
 import { AnimatePresence } from "framer-motion";
+import ShowRoles from "./pages/game/ShowRoles";
 function App() {
   const location = useLocation();
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route element={<Contact />} path="contact" />
         <Route element={<Players />} path="game/start" />
         <Route element={<ChooseRole />} path="game/roles" />
+        <Route element={<ShowRoles />} path="game/showRoles" />
       </Routes>
       </AnimatePresence>
   );

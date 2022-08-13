@@ -31,9 +31,10 @@ function ChooseRole() {
       : Math.floor(playersCount / 2);
   const [mafiaCount, setMafiaCount] = useState(mafiaiInitialCount);
   const [cityCount, setcityCount] = useState(cityiInitialCount);
-
+const initialGap = cityiInitialCount - mafiaiInitialCount 
   const addMafiaCount = () => {
-    if (cityCount - 1 <= mafiaCount) return;
+    if (initialGap === 2 && cityCount - 1 <= mafiaCount + 1) return;
+    if (initialGap === 1 && cityCount - 1 <= mafiaCount) return;
     setSelectedRoles([]);
     setMafiaCount((prev) => prev + 1);
     setcityCount((prev) => prev - 1);
@@ -51,7 +52,8 @@ function ChooseRole() {
     setcityCount((prev) => prev + 1);
   };
   const minusCityCount = () => {
-    if (cityCount - 1 <= mafiaCount) return;
+    if (initialGap === 2 && cityCount - 1 <= mafiaCount + 1) return;
+    if (initialGap === 1 && cityCount - 1 <= mafiaCount) return;
     setSelectedRoles([]);
     setMafiaCount((prev) => prev + 1);
     setcityCount((prev) => prev - 1);

@@ -5,65 +5,62 @@ type roles = {
   roleName: string;
 }[];
 
-export enum CITY_ROLES {
+export enum ROLES_ENUM {
   DOCTOR = 1,
   SNIPER,
   ARMOUR,
   DETECTIVE,
   SIMPLE_CITY,
-}
-export enum MAFIA_ROLES {
-  DOCTOR_LECTOR = 1,
+  DOCTOR_LECTOR ,
   GODFATHER,
   SIMPLE_MAFIA,
 }
-
 export const rolesData: roles = [
   {
     id: 1,
-    roleType: CITY_ROLES.DOCTOR,
+    roleType: ROLES_ENUM.DOCTOR,
     roleName: "پزشک",
     city: true,
   },
   {
     id: 2,
-    roleType: CITY_ROLES.SNIPER,
+    roleType: ROLES_ENUM.SNIPER,
     roleName: "تک تیرانداز",
     city: true,
   },
   {
     id: 3,
-    roleType: CITY_ROLES.DETECTIVE,
+    roleType: ROLES_ENUM.DETECTIVE,
     roleName: "کارآگاه",
     city: true,
   },
   {
     id: 4,
-    roleType: CITY_ROLES.SIMPLE_CITY,
+    roleType: ROLES_ENUM.SIMPLE_CITY,
     roleName: "شهروند ساده",
     city: true,
   },
   {
     id: 5,
-    roleType: CITY_ROLES.ARMOUR,
+    roleType: ROLES_ENUM.ARMOUR,
     roleName: "زره پوش",
     city: true,
   },
   {
     id: 6,
-    roleType: MAFIA_ROLES.GODFATHER,
+    roleType: ROLES_ENUM.GODFATHER,
     roleName: "رئیس مافیا",
     city: false,
   },
   {
     id: 7,
-    roleType: MAFIA_ROLES.DOCTOR_LECTOR,
+    roleType: ROLES_ENUM.DOCTOR_LECTOR,
     roleName: "دکتر لکتر",
     city: false,
   },
   {
     id: 8,
-    roleType: MAFIA_ROLES.SIMPLE_MAFIA,
+    roleType: ROLES_ENUM.SIMPLE_MAFIA,
     roleName: "مافیای ساده",
     city: false,
   },

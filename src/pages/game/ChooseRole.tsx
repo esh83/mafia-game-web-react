@@ -1,4 +1,4 @@
-import { CITY_ROLES, MAFIA_ROLES, rolesData } from "../../Roles";
+import {ROLES_ENUM, rolesData } from "../../Roles";
 import GameContainer from "../../components/GameContainer";
 import Header from "../../components/Header";
 import {
@@ -103,7 +103,7 @@ function ChooseRole() {
         <div className="flex felx-row flex-wrap">
           {rolesData
             ?.filter((role) => role.city === true)
-            .filter((role) => role.roleType !== CITY_ROLES.SIMPLE_CITY)
+            .filter((role) => role.roleType !== ROLES_ENUM.SIMPLE_CITY)
             .map((role) => {
               return (
                 <RoleSelect
@@ -124,7 +124,7 @@ function ChooseRole() {
         <div className="flex felx-row flex-wrap">
           {rolesData
             ?.filter((role) => role.city === false)
-            .filter((role) => role.roleType !== MAFIA_ROLES.SIMPLE_MAFIA)
+            .filter((role) => role.roleType !== ROLES_ENUM.SIMPLE_MAFIA)
             .map((role) => {
               return (
                 <RoleSelect

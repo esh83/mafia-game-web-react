@@ -36,7 +36,7 @@ function Manager() {
     showModal: false,
     modalMessage: "",
   });
-  const [deletedOfNight, setDeletedOfNight] = useState<string[] | undefined>(
+  const [deletedOfNight, setDeletedOfNight] = useState<any>(
     []
   );
   const mafiaRoles = rolesData
@@ -53,7 +53,10 @@ function Manager() {
     .filter((role) => cityRoles.includes(role.playerRole)).length;
 
   useEffect(() => {
-    setDeletedOfNight(searchParams.get("deleted")?.split(","));
+    const dlN =
+      searchParams.get("deleted") !== "" ? searchParams.get("deleted") : [];
+
+    setDeletedOfNight(dlN);
     const show = searchParams.get("modal") === "true" ? true : false;
     setInfoModal(show);
     if (playersWithRole.length < 1) {
@@ -108,7 +111,7 @@ function Manager() {
               ) : presentMafiasCount <= 0 ? (
                 <p className="text-emerald-600 font-bold mb-2">شهر برنده شد</p>
               ) : null}
-              {deletedOfNight && deletedOfNight.length < 1 ? (
+              {deletedOfNight && deletedOfNight?.length < 1 ? (
                 <p>دیشب کشته ای نداشت !</p>
               ) : (
                 <p>کشته / کشته های شب : {deletedOfNight?.toString()}</p>

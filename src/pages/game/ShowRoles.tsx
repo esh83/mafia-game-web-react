@@ -58,7 +58,8 @@ function ShowRoles() {
   type playersWithRoleType = {
     playerName: string;
     playerRole: number;
-    deleted : boolean
+    deleted: boolean;
+    shield: boolean;
   }[];
   const playersWithRole: playersWithRoleType = [];
   if (playerNames.length === allRolesArray.length) {
@@ -66,7 +67,8 @@ function ShowRoles() {
       playersWithRole.push({
         playerName: player,
         playerRole: allRolesArray[index],
-        deleted : false
+        deleted: false,
+        shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
       });
     });
   } else {

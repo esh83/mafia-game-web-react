@@ -8,10 +8,10 @@ import {
   RefreshIcon,
   XIcon,
 } from "@heroicons/react/solid";
-import {CheckCircleIcon , XCircleIcon} from '@heroicons/react/outline'
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/outline";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   deletePlayer,
   restorePlayer,
@@ -20,23 +20,25 @@ import { useAppDispatch, useAppSelector } from "../../app/hook";
 import GameContainer from "../../components/GameContainer";
 import Modal from "../../components/Modal";
 import { rolesData } from "../../Roles";
+import { resetArmour } from "../../app/features/nightSlice";
 
 function Manager() {
+  let [searchParams] = useSearchParams();
+
   const playersWithRole = useAppSelector(
     (state) => state.playerWithRoles.playersWithRoles
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (playersWithRole.length < 1) {
-      navigate("/game/start");
-    }
-  }, []);
+  const [infoModal, setInfoModal] = useState(false);
   const [chanceModal, setChanceModal] = useState(false);
   const [messageModal, setMessageModal] = useState({
     showModal: false,
     modalMessage: "",
   });
+  const [deletedOfNight, setDeletedOfNight] = useState<string[] | undefined>(
+    []
+  );
   const mafiaRoles = rolesData
     .filter((role) => role.city === false)
     .map((role) => role.roleType);
@@ -49,6 +51,15 @@ function Manager() {
   const presentCityCount = playersWithRole
     .filter((role) => role.deleted === false)
     .filter((role) => cityRoles.includes(role.playerRole)).length;
+
+  useEffect(() => {
+    setDeletedOfNight(searchParams.get("deleted")?.split(","));
+    const show = searchParams.get("modal") === "true" ? true : false;
+    setInfoModal(show);
+    if (playersWithRole.length < 1) {
+      navigate("/game/start");
+    }
+  }, []);
 
   function deletePlayerByName(playerName: string, isCity: boolean) {
     dispatch(deletePlayer(playerName));
@@ -84,10 +95,39 @@ function Manager() {
     setRandomBoolarray((prev) => shuffleArr(prev));
   }, [chanceModal]);
   const [showCard1, setShowCard1] = useState(false);
-  const [showCard2, setShowCard2] = useState(false);  
+  const [showCard2, setShowCard2] = useState(false);
+
   return (
     <GameContainer>
       <AnimatePresence>
+        {infoModal && (
+          <Modal showModal={infoModal}>
+            <div className="text-md text-center my-2 dark:text-gray-100">
+              {presentCityCount <= presentMafiasCount ? (
+                <p className="text-red-600 font-bold mb-2">مافیا برنده شد</p>
+              ) : presentMafiasCount <= 0 ? (
+                <p className="text-emerald-600 font-bold mb-2">شهر برنده شد</p>
+              ) : null}
+              {deletedOfNight && deletedOfNight.length < 1 ? (
+                <p>دیشب کشته ای نداشت !</p>
+              ) : (
+                <p>کشته / کشته های شب : {deletedOfNight?.toString()}</p>
+              )}
+              {searchParams.get("armourWant") === "true" ? (
+                <p>زره پوش درخواست استعلام کرد</p>
+              ) : (
+                <p>زره پوش استعلام نخواست</p>
+              )}
+            </div>
+            <button
+              className="text-white bg-primary-2 rounded shadow py-2 px-5 mx-auto block mt-4"
+              onClick={() => setInfoModal(false)}
+            >
+              اوکی
+            </button>
+          </Modal>
+        )}
+
         {messageModal.showModal && (
           <Modal showModal={messageModal.showModal}>
             <p className="text-sm text-center my-2 dark:text-gray-100">
@@ -111,15 +151,35 @@ function Manager() {
                 onClick={() => setShowCard1(true)}
                 className="cursor-pointer w-32 mx-5 h-56 flex items-center justify-center p-2 rounded border-2 border-primary-1"
               >
-                {!showCard1 && <span className="font-bold text-2xl dark:text-white">1</span>}
-                {showCard1 && <p>{randomBoolArray[0] ? <CheckCircleIcon className="w-10 h-10 text-emerald-500" /> : <XCircleIcon className="h-10 w-10 text-red-600" />}</p>}
+                {!showCard1 && (
+                  <span className="font-bold text-2xl dark:text-white">1</span>
+                )}
+                {showCard1 && (
+                  <p>
+                    {randomBoolArray[0] ? (
+                      <CheckCircleIcon className="w-10 h-10 text-emerald-500" />
+                    ) : (
+                      <XCircleIcon className="h-10 w-10 text-red-600" />
+                    )}
+                  </p>
+                )}
               </div>
               <div
                 onClick={() => setShowCard2(true)}
                 className="cursor-pointer w-32 mx-5 h-56 flex items-center justify-center p-2 rounded border-2 border-primary-1"
               >
-                {!showCard2 && <span className="font-bold text-2xl dark:text-white">2</span>}
-                {showCard2 && <p>{randomBoolArray[1] ? <CheckCircleIcon className="w-10 h-10 text-emerald-500" /> : <XCircleIcon className="h-10 w-10 text-red-600" />}</p>}
+                {!showCard2 && (
+                  <span className="font-bold text-2xl dark:text-white">2</span>
+                )}
+                {showCard2 && (
+                  <p>
+                    {randomBoolArray[1] ? (
+                      <CheckCircleIcon className="w-10 h-10 text-emerald-500" />
+                    ) : (
+                      <XCircleIcon className="h-10 w-10 text-red-600" />
+                    )}
+                  </p>
+                )}
               </div>
             </div>
             <button
@@ -153,13 +213,16 @@ function Manager() {
           <ViewGridIcon className="text-white h-4 w-4 mr-1" />
         </button>
 
-        <Link
-          to="/game/start"
+        <button
+          onClick={() => {
+            dispatch(resetArmour());
+            navigate("/game/start");
+          }}
           className="flex my-2 items-center p-2 min-w-[80px] justify-center text-center bg-secondary-1 text-white rounded shadow-md mx-1"
         >
           شروع مجدد
           <RefreshIcon className="text-white h-4 w-4 mr-1" />
-        </Link>
+        </button>
       </div>
 
       <div className="">

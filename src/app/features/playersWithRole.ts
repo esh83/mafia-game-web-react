@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ROLES_ENUM } from "../../Roles";
 type objType = {
   playerName: string;
   playerRole: number;
   deleted: boolean;
+  shield: boolean;
 }[];
 type initialStateType = {
   playersWithRoles: objType;
@@ -17,6 +19,10 @@ const playersWithRoleSlice = createSlice({
     addPlayersWithRole: (state, action: PayloadAction<objType>) => {
       state.playersWithRoles = action.payload;
     },
+    removeShield: (state) => {
+      state.playersWithRoles.filter((role) => role.shield === true)[0].shield =
+        false;
+    },
     deletePlayer: (state, action: PayloadAction<string>) => {
       state.playersWithRoles.filter(
         (role) => role.playerName === action.payload
@@ -29,6 +35,6 @@ const playersWithRoleSlice = createSlice({
     },
   },
 });
-export const { addPlayersWithRole, deletePlayer , restorePlayer } =
+export const { addPlayersWithRole, deletePlayer, restorePlayer , removeShield } =
   playersWithRoleSlice.actions;
 export default playersWithRoleSlice.reducer;

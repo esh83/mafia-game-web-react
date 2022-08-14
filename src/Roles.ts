@@ -65,3 +65,7 @@ export const rolesData: roles = [
     city: false,
   },
 ];
+
+
+export const mafiaRolesArr = rolesData.filter(role =>role.city === false).map(role => role.roleType)
+export const cityRolesArr = rolesData.filter(role =>role.city === true).map(role=>role.roleType)

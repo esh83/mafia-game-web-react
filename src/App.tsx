@@ -7,6 +7,7 @@ import ChooseRole from "./pages/game/ChooseRole";
 import { AnimatePresence } from "framer-motion";
 import ShowRoles from "./pages/game/ShowRoles";
 import Manager from "./pages/game/Manager";
+import MafiaShot from "./pages/game/night/mafiaShot";
 function App() {
   const location = useLocation();
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route element={<ChooseRole />} path="game/roles" />
         <Route element={<ShowRoles />} path="game/showRoles" />
         <Route element={<Manager />} path="game/manager" />
+        <Route element={<MafiaShot />} path="game/night/mafia-shot" />
       </Routes>
       </AnimatePresence>
   );

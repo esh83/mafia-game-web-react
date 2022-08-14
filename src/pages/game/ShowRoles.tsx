@@ -1,12 +1,13 @@
 import { InformationCircleIcon } from "@heroicons/react/solid";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addPlayersWithRole } from "../../app/features/playersWithRole";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
 import GameContainer from "../../components/GameContainer";
 import Header from "../../components/Header";
+import Modal from "../../components/Modal";
 import { rolesData, ROLES_ENUM } from "../../Roles";
 
 function ShowRoles() {
@@ -57,6 +58,7 @@ function ShowRoles() {
   type playersWithRoleType = {
     playerName: string;
     playerRole: number;
+    deleted : boolean
   }[];
   const playersWithRole: playersWithRoleType = [];
   if (playerNames.length === allRolesArray.length) {
@@ -64,6 +66,7 @@ function ShowRoles() {
       playersWithRole.push({
         playerName: player,
         playerRole: allRolesArray[index],
+        deleted : false
       });
     });
   } else {
@@ -79,20 +82,18 @@ function ShowRoles() {
   };
 
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setmodalTitle] = useState("");
   const [playersWithRoleCopy, setPlayersWithRoleCopy] =
     useState(playersWithRole);
 
   function openModal(role: number, index: number) {
     setShowModal(true);
     const roleName = rolesData.filter((i) => i.roleType === role)[0].roleName;
-    setModalContent(roleName);
+    setmodalTitle(roleName);
     setPlayersWithRoleCopy((prev) => prev.filter((item, i) => i !== index));
   }
   const dispatch = useAppDispatch();
   function addPlayersWithRoleToStore() {
-    console.log(playersWithRole);
-
     dispatch(addPlayersWithRole(playersWithRole));
     navigate("../game/manager");
   }
@@ -105,29 +106,20 @@ function ShowRoles() {
       />
       <AnimatePresence>
         {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            variants={variants}
-            animate={showModal ? "opened" : "closed"}
-            transition={{ duration: 0.2 }}
-            className="w-full h-full fixed top-0 left-0 bg-opacity-40 bg-black flex items-center justify-center"
-          >
-            <div className="bg-white rounded-2xl p-4 md:w-1/2 w-11/12 dark:bg-dark-color">
-              <h2 className="text-lg font-bold text-center pb-2 border-b dark:text-white">
-                {modalContent}
-              </h2>
-              <p className="text-sm text-center my-2 dark:text-gray-100 opacity-80">
-                توضیحات به زودی ...
-              </p>
-              <button
-                className="text-white bg-primary-2 rounded shadow py-2 px-5 mx-auto block mt-4"
-                onClick={() => setShowModal(false)}
-              >
-                متوجه شدم
-              </button>
-            </div>
-          </motion.div>
+          <Modal showModal={showModal}>
+            <h2 className="text-lg font-bold text-center pb-2 border-b dark:text-white">
+              {modalTitle}
+            </h2>
+            <p className="text-sm text-center my-2 dark:text-gray-100 opacity-80">
+              توضیحات به زودی ...
+            </p>
+            <button
+              className="text-white bg-primary-2 rounded shadow py-2 px-5 mx-auto block mt-4"
+              onClick={() => setShowModal(false)}
+            >
+              متوجه شدم
+            </button>
+          </Modal>
         )}
       </AnimatePresence>
 

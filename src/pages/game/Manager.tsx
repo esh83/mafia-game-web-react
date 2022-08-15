@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hook";
 import GameContainer from "../../components/GameContainer";
 import Modal from "../../components/Modal";
 import { rolesData } from "../../Roles";
-import { resetArmour } from "../../app/features/nightSlice";
+import { resetArmour, resetNight } from "../../app/features/nightSlice";
 
 function Manager() {
   let [searchParams] = useSearchParams();
@@ -36,9 +36,7 @@ function Manager() {
     showModal: false,
     modalMessage: "",
   });
-  const [deletedOfNight, setDeletedOfNight] = useState<any>(
-    []
-  );
+  const [deletedOfNight, setDeletedOfNight] = useState<any>([]);
   const mafiaRoles = rolesData
     .filter((role) => role.city === false)
     .map((role) => role.roleType);
@@ -58,6 +56,9 @@ function Manager() {
 
     setDeletedOfNight(dlN);
     const show = searchParams.get("modal") === "true" ? true : false;
+    if (show) {
+      dispatch(resetNight());
+    }
     setInfoModal(show);
     if (playersWithRole.length < 1) {
       navigate("/game/start");

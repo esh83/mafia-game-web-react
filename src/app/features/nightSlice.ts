@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import MafiaSave from "../../pages/game/night/MafiaSave";
 type mafiaShot = {
   playerName: string;
   playerRole: number;
@@ -33,6 +34,12 @@ const nightSlice = createSlice({
     updateMafiaShot: (state, action: PayloadAction<mafiaShot>) => {
       state.mafiaShot = action.payload;
     },
+    resetNight: (state) => {
+      state.sniperShot = {playerName: "", playerRole: 0};
+      state.armourResault.want = false;
+      state.mafiaSave = { playerName: "", playerRole: 0 }
+      state.citySave = { playerName: "", playerRole: 0 }
+    },
     updateMafiaSave: (state, action: PayloadAction<mafiaSave>) => {
       state.mafiaSave = action.payload;
     },
@@ -61,5 +68,6 @@ export const {
   updateCitySave,
   updateSniperShot,
   updateArmourResault,
-  resetArmour
+  resetArmour,
+  resetNight
 } = nightSlice.actions;

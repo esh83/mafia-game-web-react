@@ -76,7 +76,7 @@ const initialGap = cityiInitialCount - mafiaiInitialCount
           </button>
           <span className="mx-4 dark:text-white">{mafiaCount} مافیا</span>
           <button onClick={minusMafiaCount}>
-            <MinusCircleIcon className="w-8 h-8 text-gray-500" />
+            <MinusCircleIcon className="w-8 h-8 text-gray-600" />
           </button>
         </div>
         <div className="flex flex-row items-center">

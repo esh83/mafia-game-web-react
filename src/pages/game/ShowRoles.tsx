@@ -14,66 +14,88 @@ function ShowRoles() {
   const playerNames = useAppSelector((state) => state.players.playerNames);
   const roles = useAppSelector((state) => state.roles);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (playerNames.length < 1) {
-      navigate("/game/start");
-    }
-  }, []);
-
-  const mafiaRolesId = rolesData
-    .filter((role) => role.city === false)
-    .map((role) => role.id);
-  const cityRolesId = rolesData
-    .filter((role) => role.city === true)
-    .map((role) => role.id);
-  const mafiaRolesCount = roles.roles.filter((role) =>
-    mafiaRolesId.includes(role)
-  ).length;
-  const cityRolesCount = roles.roles.filter((role) =>
-    cityRolesId.includes(role)
-  ).length;
-
-  const simpleMafiasCount = roles.mafiaCount - mafiaRolesCount;
-  const simpleCityCount = roles.cityCount - cityRolesCount;
-  const allRolesArray = rolesData
-    .filter((item) => roles.roles.includes(item.id))
-    .map((item) => item.roleType);
-
-  for (let i = 0; i < simpleMafiasCount; i++) {
-    allRolesArray.push(ROLES_ENUM.SIMPLE_MAFIA);
-  }
-  for (let i = 0; i < simpleCityCount; i++) {
-    allRolesArray.push(ROLES_ENUM.SIMPLE_CITY);
-  }
-
-  const shuffleArray = (array: number[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-  };
-  shuffleArray(allRolesArray);
   type playersWithRoleType = {
     playerName: string;
     playerRole: number;
     deleted: boolean;
     shield: boolean;
   }[];
-  const playersWithRole: playersWithRoleType = [];
-  if (playerNames.length === allRolesArray.length) {
-    playerNames.forEach((player, index) => {
-      playersWithRole.push({
-        playerName: player,
-        playerRole: allRolesArray[index],
-        deleted: false,
-        shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
+  const [playersWithRole, setPlayersWithRole] = useState<playersWithRoleType>(
+    []
+  );
+  const [playersWithRoleCopy, setPlayersWithRoleCopy] =
+    useState<playersWithRoleType>([]);
+  useEffect(() => {
+    const mafiaRolesId = rolesData
+      .filter((role) => role.city === false)
+      .map((role) => role.id);
+    const cityRolesId = rolesData
+      .filter((role) => role.city === true)
+      .map((role) => role.id);
+    const mafiaRolesCount = roles.roles.filter((role) =>
+      mafiaRolesId.includes(role)
+    ).length;
+    const cityRolesCount = roles.roles.filter((role) =>
+      cityRolesId.includes(role)
+    ).length;
+
+    const simpleMafiasCount = roles.mafiaCount - mafiaRolesCount;
+    const simpleCityCount = roles.cityCount - cityRolesCount;
+    const allRolesArray = rolesData
+      .filter((item) => roles.roles.includes(item.id))
+      .map((item) => item.roleType);
+
+    for (let i = 0; i < simpleMafiasCount; i++) {
+      allRolesArray.push(ROLES_ENUM.SIMPLE_MAFIA);
+    }
+    for (let i = 0; i < simpleCityCount; i++) {
+      allRolesArray.push(ROLES_ENUM.SIMPLE_CITY);
+    }
+
+    const shuffleArray = (array: number[]) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+    };
+    shuffleArray(allRolesArray);
+
+    if (playerNames.length === allRolesArray.length) {
+      playerNames.forEach((player, index) => {
+        setPlayersWithRole((prev) => {
+          return [
+            ...prev,
+            {
+              playerName: player,
+              playerRole: allRolesArray[index],
+              deleted: false,
+              shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
+            },
+          ];
+        });
+        setPlayersWithRoleCopy((prev) => {
+          return [
+            ...prev,
+            {
+              playerName: player,
+              playerRole: allRolesArray[index],
+              deleted: false,
+              shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
+            },
+          ];
+        });
       });
-    });
-  } else {
-    navigate("/game/start");
-  }
+    } else {
+      navigate("/game/start");
+    }
+
+    if (playerNames.length < 1) {
+      navigate("/game/start");
+    }
+  }, []);
+
   const variants = {
     opened: {
       opacity: 1,
@@ -85,8 +107,6 @@ function ShowRoles() {
 
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setmodalTitle] = useState("");
-  const [playersWithRoleCopy, setPlayersWithRoleCopy] =
-    useState(playersWithRole);
 
   function openModal(role: number, index: number) {
     setShowModal(true);

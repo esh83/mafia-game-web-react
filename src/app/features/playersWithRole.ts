@@ -5,6 +5,7 @@ type objType = {
   playerRole: number;
   deleted: boolean;
   shield: boolean;
+  canSaveMore: boolean;
 }[];
 type initialStateType = {
   playersWithRoles: objType;
@@ -23,6 +24,11 @@ const playersWithRoleSlice = createSlice({
       state.playersWithRoles.filter((role) => role.shield === true)[0].shield =
         false;
     },
+    removeCanSaveMore: (state, action: PayloadAction<string>) => {
+      state.playersWithRoles.filter(
+        (role) => role.playerName === action.payload
+      )[0].canSaveMore = false;
+    },
     deletePlayer: (state, action: PayloadAction<string>) => {
       state.playersWithRoles.filter(
         (role) => role.playerName === action.payload
@@ -35,6 +41,6 @@ const playersWithRoleSlice = createSlice({
     },
   },
 });
-export const { addPlayersWithRole, deletePlayer, restorePlayer , removeShield } =
+export const { addPlayersWithRole, deletePlayer, restorePlayer, removeShield , removeCanSaveMore } =
   playersWithRoleSlice.actions;
 export default playersWithRoleSlice.reducer;

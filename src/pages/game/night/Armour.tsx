@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { updateArmourResault } from "../../../app/features/nightSlice";
 import {
   deletePlayer,
+  removeCanSaveMore,
   removeShield,
 } from "../../../app/features/playersWithRole";
 import { useAppDispatch, useAppSelector } from "../../../app/hook";
@@ -24,6 +25,16 @@ function Armour() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   function proccessNightInfo() {
+
+if(nightData.citySave.playerName === playersWithRole.filter(role => role.playerRole === ROLES_ENUM.DOCTOR)[0].playerName){
+  dispatch(removeCanSaveMore(nightData.citySave.playerName))
+}
+if(nightData.mafiaSave.playerName === playersWithRole.filter(role => role.playerRole === ROLES_ENUM.DOCTOR_LECTOR)[0].playerName){
+  dispatch(removeCanSaveMore(nightData.mafiaSave.playerName))
+}
+
+
+
     if (
       nightData.mafiaShot.playerName !== "" &&
       nightData.citySave.playerName !== nightData.mafiaShot.playerName

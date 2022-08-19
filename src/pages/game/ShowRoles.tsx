@@ -19,6 +19,7 @@ function ShowRoles() {
     playerRole: number;
     deleted: boolean;
     shield: boolean;
+    canSaveMore: boolean;
   }[];
   const [playersWithRole, setPlayersWithRole] = useState<playersWithRoleType>(
     []
@@ -72,6 +73,7 @@ function ShowRoles() {
               playerRole: allRolesArray[index],
               deleted: false,
               shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
+              canSaveMore: true,
             },
           ];
         });
@@ -83,6 +85,7 @@ function ShowRoles() {
               playerRole: allRolesArray[index],
               deleted: false,
               shield: allRolesArray[index] === ROLES_ENUM.ARMOUR ? true : false,
+              canSaveMore: true,
             },
           ];
         });

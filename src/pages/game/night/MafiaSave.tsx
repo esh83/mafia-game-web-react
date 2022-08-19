@@ -50,6 +50,7 @@ function MafiaSave() {
         <div className="flex mx-2 my-2 relative items-center px-1 py-3 w-40 rounded border border-gray-200 dark:border-gray-700">
           <input
             id="no-action"
+          
             type="radio"
             name="mafia-shot"
             value={`role-no-action`}
@@ -77,10 +78,11 @@ function MafiaSave() {
             return (
               <div
                 key={role.playerName}
-                className="flex mx-2 my-2 relative items-center px-1 py-3 w-40 rounded border border-gray-200 dark:border-gray-700"
+                className={` ${!role.canSaveMore && 'opacity-50'} flex mx-2 my-2 relative items-center px-1 py-3 w-40 rounded border border-gray-200 dark:border-gray-700`}
               >
                 <input
                   id={role.playerName}
+                  disabled={!role.canSaveMore}
                   type="radio"
                   name="mafia-save"
                   value={`role-${role.playerName}`}

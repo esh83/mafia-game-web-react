@@ -20,9 +20,9 @@ function Detective() {
     }
     if (
       playersWithRole.filter((role) => role.playerRole === ROLES_ENUM.DETECTIVE)
-        .length < 1 || playersWithRole.filter((role) => role.playerRole === ROLES_ENUM.DETECTIVE)[0].deleted === true
+        .length < 1
     ) {
-       navigate("/game/night/sniper");
+      navigate("/game/night/sniper");
     }
   }, []);
 
@@ -33,39 +33,49 @@ function Detective() {
         title="استعلام کارگاه"
         prevUrl="/game/night/city-save"
       />
-
-      {playersWithRole
-        .filter((role) => role.deleted === false)
-        .map((role) => {
-          const roleName = rolesData.filter(
-            (i) => i.roleType === role.playerRole
-          )[0].roleName;
-          const isCity = rolesData.filter(
-            (i) => i.roleType === role.playerRole
-          )[0].city;
-          return (
-            <div
-              key={role.playerName}
-              className="flex justify-between flex-row border bg-secondary-1 bg-opacity-50 border-secondary-2 p-2 my-2 rounded"
-            >
-              <span className="flex items-center select-none">
-                <UserIcon
-                  className={`ml-2 w-5 h-5 ${
-                    isCity ? "text-white" : "text-gray-900"
-                  }`}
-                />
-                {role.playerName} : {roleName}
-              </span>
-              <span>
-                {isCity || role.playerRole === ROLES_ENUM.GODFATHER ? (
-                  <ThumbDownIcon className="w-5 h-5 text-red-600" />
-                ) : (
-                  <ThumbUpIcon className="w-5 h-5 text-emerald-700" />
-                )}
-              </span>
-            </div>
-          );
-        })}
+      {playersWithRole.filter(
+        (role) => role.playerRole === ROLES_ENUM.DETECTIVE
+      )[0] &&
+      playersWithRole.filter(
+        (role) => role.playerRole === ROLES_ENUM.DETECTIVE
+      )[0].deleted === true ? (
+        <p className="text-center mt-3 dark:text-white">
+          کارآگاه از بازی حذف شده
+        </p>
+      ) : (
+        playersWithRole
+          .filter((role) => role.deleted === false)
+          .map((role) => {
+            const roleName = rolesData.filter(
+              (i) => i.roleType === role.playerRole
+            )[0].roleName;
+            const isCity = rolesData.filter(
+              (i) => i.roleType === role.playerRole
+            )[0].city;
+            return (
+              <div
+                key={role.playerName}
+                className="flex justify-between flex-row border bg-secondary-1 bg-opacity-50 border-secondary-2 p-2 my-2 rounded"
+              >
+                <span className="flex items-center select-none">
+                  <UserIcon
+                    className={`ml-2 w-5 h-5 ${
+                      isCity ? "text-white" : "text-gray-900"
+                    }`}
+                  />
+                  {role.playerName} : {roleName}
+                </span>
+                <span>
+                  {isCity || role.playerRole === ROLES_ENUM.GODFATHER ? (
+                    <ThumbDownIcon className="w-5 h-5 text-red-600" />
+                  ) : (
+                    <ThumbUpIcon className="w-5 h-5 text-emerald-700" />
+                  )}
+                </span>
+              </div>
+            );
+          })
+      )}
     </GameContainer>
   );
 }

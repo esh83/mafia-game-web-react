@@ -25,15 +25,24 @@ function Armour() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   function proccessNightInfo() {
-
-if(nightData.citySave.playerName === playersWithRole.filter(role => role.playerRole === ROLES_ENUM.DOCTOR)[0].playerName){
-  dispatch(removeCanSaveMore(nightData.citySave.playerName))
-}
-if(nightData.mafiaSave.playerName === playersWithRole.filter(role => role.playerRole === ROLES_ENUM.DOCTOR_LECTOR)[0].playerName){
-  dispatch(removeCanSaveMore(nightData.mafiaSave.playerName))
-}
-
-
+    if (
+      nightData.citySave.playerName !== "" &&
+      nightData.citySave.playerName ===
+        playersWithRole.filter(
+          (role) => role.playerRole === ROLES_ENUM.DOCTOR
+        )[0].playerName
+    ) {
+      dispatch(removeCanSaveMore(nightData.citySave.playerName));
+    }
+    if (
+      nightData.mafiaSave.playerName !== "" &&
+      nightData.mafiaSave.playerName ===
+        playersWithRole.filter(
+          (role) => role.playerRole === ROLES_ENUM.DOCTOR_LECTOR
+        )[0].playerName
+    ) {
+      dispatch(removeCanSaveMore(nightData.mafiaSave.playerName));
+    }
 
     if (
       nightData.mafiaShot.playerName !== "" &&
@@ -74,7 +83,7 @@ if(nightData.mafiaSave.playerName === playersWithRole.filter(role => role.player
     }
     if (
       playersWithRole.filter((role) => role.playerRole === ROLES_ENUM.ARMOUR)
-        .length < 1 ||  playersWithRole.filter((role) => role.playerRole === ROLES_ENUM.ARMOUR)[0].deleted === true
+        .length < 1
     ) {
       proccessNightInfo();
     }
@@ -100,7 +109,15 @@ if(nightData.mafiaSave.playerName === playersWithRole.filter(role => role.player
         prevUrl=""
       />
 
-      {remainWant <= 0 ? (
+      {playersWithRole.filter(
+        (role) => role.playerRole === ROLES_ENUM.SNIPER
+      )[0] && playersWithRole.filter(
+        (role) => role.playerRole === ROLES_ENUM.ARMOUR
+      )[0].deleted === true ? (
+        <p className="text-center mt-3 dark:text-white">
+          زره پوش از بازی حذف شده
+        </p>
+      ) : remainWant <= 0 ? (
         <p className="mt-5 text-center dark:text-white">
           زره پوش فرصت استعلام دیگری ندارد !
         </p>

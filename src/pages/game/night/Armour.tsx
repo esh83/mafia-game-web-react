@@ -110,7 +110,7 @@ function Armour() {
       />
 
       {playersWithRole.filter(
-        (role) => role.playerRole === ROLES_ENUM.SNIPER
+        (role) => role.playerRole === ROLES_ENUM.ARMOUR
       )[0] && playersWithRole.filter(
         (role) => role.playerRole === ROLES_ENUM.ARMOUR
       )[0].deleted === true ? (

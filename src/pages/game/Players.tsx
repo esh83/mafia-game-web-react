@@ -1,5 +1,5 @@
 import Header from "../../components/Header";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import GameContainer from "../../components/GameContainer";
 import { TrashIcon } from "@heroicons/react/outline";
 import { useAppDispatch, useAppSelector } from "../../app/hook";
@@ -10,16 +10,26 @@ function Players() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const playersInStore = useAppSelector((state) => state.players.playerNames);
+  const [playerNames, setPlayerNames] = useState<string[]>(playersInStore);
+  const playersInLocalStorage = useMemo(() => {
+    return JSON.parse(localStorage.getItem("players") || "[]");
+  }, [playersInStore]);
+  useEffect(() => {
+    if (playersInLocalStorage.length >= 5 && playersInStore.length < 1) {
+      dispatch(adddPlayers(playersInLocalStorage));
+      setPlayerNames(playersInLocalStorage);
+    }
+  }, [playersInLocalStorage, playersInStore]);
   function addPlayersToStore() {
     if (playerNames.length >= 5) {
       dispatch(adddPlayers(playerNames));
+      localStorage.setItem("players", JSON.stringify(playerNames));
       navigate("../game/roles");
     } else {
-      setShowErrorAlertMessage("حداقل 5 بازیکن ثبت کنید !")
+      setShowErrorAlertMessage("حداقل 5 بازیکن ثبت کنید !");
       setShowErrorAlert(true);
     }
   }
-  const [playerNames, setPlayerNames] = useState<string[]>(playersInStore);
   const [nameInput, setNameInput] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [ErrorAlertMessage, setShowErrorAlertMessage] = useState("");
@@ -28,10 +38,10 @@ function Players() {
     if (nameInput === "") {
       return;
     } else {
-      if(playerNames.includes(nameInput)) {
-        setShowErrorAlertMessage("نام بازیکن تکراری است !")
-        setShowErrorAlert(true)
-return
+      if (playerNames.includes(nameInput)) {
+        setShowErrorAlertMessage("نام بازیکن تکراری است !");
+        setShowErrorAlert(true);
+        return;
       }
       setNameInput("");
       setPlayerNames((prev) => [...prev, nameInput]);

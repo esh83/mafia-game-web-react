@@ -1,1 +1,1 @@
-mafia game hanlder with react/ts for web
+mafia game handler spa using react
